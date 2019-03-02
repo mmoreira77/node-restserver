@@ -35,6 +35,6 @@ app.delete('/usuario', (req, res)=>{
     res.json('DELETE Usuario: Melvin Alexander Gonzalez Moreira');    
 });
 
-app.listen(3000, ()=>{
-    console.log(process.env.PORT, 3000 );
+app.listen(process.env.PORT, ()=>{
+    console.log('Escuchando en el puerto: ' + process.env.PORT);
 });
