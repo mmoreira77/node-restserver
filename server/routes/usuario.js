@@ -11,7 +11,8 @@ app.get('/usuario', (req, res) => {
     let hasta = req.query.hasta || 5;
     desde = Number(desde);
     hasta = Number(hasta);
-    Usuario.find({estado: true}, 'nombre email role estado google img')
+    // Usuario.find({estado: true}, 'nombre email role estado google img')
+    Usuario.find({}, 'nombre email role estado google img')
         .skip(desde)
         .limit(hasta)
         .exec((err, usuarios) => {
@@ -22,7 +23,8 @@ app.get('/usuario', (req, res) => {
                 })
             }
 
-            Usuario.countDocuments({estado: true}, (err, conteo) => {
+            // Usuario.countDocuments({estado: true}, (err, conteo) => {
+            Usuario.countDocuments({}, (err, conteo) => {
                 res.json({
                     ok: true,
                     usuarios,
