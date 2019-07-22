@@ -2,11 +2,17 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const _ = require('underscore');
 const Usuario = require('../models/usuario');
-const { verificaToken } = require('../middlewares/autenticacion');
+const { verificaToken, verificaAdmin_Role} = require('../middlewares/autenticacion');
 
 const app = express();
 
 app.get('/usuario', verificaToken, (req, res) => {
+
+    // return res.json({
+    //     usuario: req.usuario,
+    //     nombre: req.usuario.nombre,
+    //     email: req.usuario.email
+    // });
 
     let desde = req.query.desde || 0;
     let hasta = req.query.hasta || 5;
@@ -36,7 +42,7 @@ app.get('/usuario', verificaToken, (req, res) => {
         })
 });
 
-app.post('/usuario', (req, res) => {
+app.post('/usuario', [verificaToken, verificaAdmin_Role],(req, res) => {
     let body = req.body;
 
     let usuario = new Usuario({
@@ -73,7 +79,7 @@ app.post('/usuario', (req, res) => {
     // }
 });
 
-app.put('/usuario/:id', (req, res) => {
+app.put('/usuario/:id', [verificaToken, verificaAdmin_Role],(req, res) => {
     let id = req.params.id;
     let body = _.pick(req.body, ['nombre', 'email', 'img', 'role', 'estado']);
 
@@ -93,14 +99,14 @@ app.put('/usuario/:id', (req, res) => {
     });
 });
 
-app.delete('/usuario/:id', (req, res) => {
+app.delete('/usuario/:id', [verificaToken, verificaAdmin_Role],(req, res) => {
     let id = req.params.id;
     // Usuario.findByIdAndRemove(id, (err, usuarioBorrado) => {
-    let  cambiaEstado = {
+    let cambiaEstado = {
         estado: false
     }
-    Usuario.findByIdAndUpdate(id, cambiaEstado,{new: true},(err, usuarioBorrado) => {
- 
+    Usuario.findByIdAndUpdate(id, cambiaEstado, { new: true }, (err, usuarioBorrado) => {
+
         if (err) {
             return res.status(400).json({
                 ok: false,
@@ -108,11 +114,11 @@ app.delete('/usuario/:id', (req, res) => {
             });
         }
 
-        if(!usuarioBorrado){
+        if (!usuarioBorrado) {
             return res.status(400).json({
                 ok: false,
                 error: {
-                    message:'Usuario no encontrado'
+                    message: 'Usuario no encontrado'
                 }
             });
         }
