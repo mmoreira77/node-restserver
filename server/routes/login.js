@@ -49,7 +49,7 @@ app.post('/login', (req, res) => {
 
 app.post('/google', (req, res) => {
     // let token = req.body.idtoken;
-    req.json({
+    res.json({
         body: req.body
     });
 });
