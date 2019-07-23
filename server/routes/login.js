@@ -47,4 +47,11 @@ app.post('/login', (req, res) => {
     });
 });
 
+app.post('/google', (req, res) => {
+    // let token = req.body.idtoken;
+    req.json({
+        body: req.body
+    });
+});
+
 module.exports = app;
