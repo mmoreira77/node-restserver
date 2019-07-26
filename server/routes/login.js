@@ -73,10 +73,10 @@ async function verify(token) {
 app.post('/google', async (req, res) => {
     let token = req.body.idtoken;
     console.log(token);
-    return res.status(500).json({
-        ok: 'true',
-        toke
-    });
+    return res.json({
+                     ok: true,
+                     token
+                 });
     //let googleUser = await verify(token);
     //     .catch(e => {
     //         return res.status(403).json({
