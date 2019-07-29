@@ -84,8 +84,7 @@ app.post('/google', async (req, res) => {
         });
 
     return res.json({
-        ok: true,
-        token,
+        ok: true,        
         googleUser
     });
 
