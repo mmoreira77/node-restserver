@@ -72,18 +72,22 @@ async function verify(token) {
 
 app.post('/google', async (req, res) => {
     let token = req.body.idtoken;
-   // console.log(token);
+    // console.log(token);
+
+    let googleUser = await verify(token)
+        .catch(e => {
+            return res.status(403).json({
+                ok: false,
+                err: e
+            });
+        });
+
     return res.json({
-                     ok: true,
-                     token
-                 });
-    // let googleUser = await verify(token)
-    //     .catch(e => {
-    //         return res.status(403).json({
-    //             ok: false,
-    //             err: e
-    //         });
-    //     });
+        ok: true,
+        token,
+        googleUser
+    });
+
 
     // Usuario.findOne({ email: googleUser.email }, (err, usuarioDB) => {
     //     if (err) {
